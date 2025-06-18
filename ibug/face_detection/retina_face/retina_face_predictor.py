@@ -25,7 +25,7 @@ class RetinaFacePredictor(object):
             config = RetinaFacePredictor.create_config()
         self.config = SimpleNamespace(**model.config.__dict__, **config.__dict__)
         self.net = RetinaFace(cfg=self.config.__dict__, phase='test').to(self.device)
-        pretrained_dict = torch.load(model.weights, map_location=self.device)
+        pretrained_dict = torch.load(model.weights, map_location=self.device, weights_only=False)
         if 'state_dict' in pretrained_dict.keys():
             pretrained_dict = {key.split('module.', 1)[-1] if key.startswith('module.') else key: value
                                for key, value in pretrained_dict['state_dict'].items()}
